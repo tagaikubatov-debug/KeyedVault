@@ -1,0 +1,25 @@
+# При первом запуске создаётся суперпользователь POSTGRES_USER (по умолчанию postgres).
+# Если меняете пользователя после первого запуска — нужен сброс volume: docker compose down -v
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: keyed-postgres
+    restart: unless-stopped
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-keyed}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-keyed_secure}
+    volumes:
+      - keyed_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d keyed"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+volumes:
+  keyed_pg_data:

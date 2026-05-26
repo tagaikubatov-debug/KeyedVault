@@ -1,0 +1,40 @@
+databases:
+  - name: keyed-db
+    databaseName: keyed
+    user: keyed_admin
+    plan: free
+
+services:
+  - type: web
+    name: keyed-backend
+    env: docker
+    plan: free
+    rootDir: Assets
+    envVars:
+      - key: PORT
+        value: "10000"
+
+      # Берем чистый внутренний хост базы в сети Render (без протоколов)
+      - key: DB_HOST
+        fromDatabase:
+          name: keyed-db
+          property: host
+
+      # Берем точное имя базы данных
+      - key: DB_NAME
+        fromDatabase:
+          name: keyed-db
+          property: database
+
+      - key: SPRING_DATASOURCE_USERNAME
+        value: keyed_admin
+
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: keyed-db
+          property: password
+
+      - key: JWT_SECRET
+        value: KeyedVaultDevSecretChangeMeInProduction32Chars
+      - key: JWT_EXPIRATION_MS
+        value: "86400000"

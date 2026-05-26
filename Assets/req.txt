@@ -1,0 +1,12 @@
+# KEYED — только зависимости Python-скриптов проекта
+# Установка: pip install -r req.txt
+#
+# watermark_engine.py — opencv-python, numpy
+# phash_engine.py      — Pillow, imagehash
+# Видео (mp4 и т.д.)   — FFmpeg отдельно в PATH, не через pip
+
+opencv-python
+numpy
+Pillow
+imagehash
+cd

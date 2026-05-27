@@ -187,10 +187,11 @@ export default function SignUp({ onSwitch }) {
       }
 
       // Если бэк при регистрации сразу возвращает JWT-токен в обертке payload
-      if (data.payload?.token) {
-        login(data.payload, false);
-        return;
+      if (data.token) {
+       login(data, false);
+       return;
       }
+
 
       setLoading(false);
       setSuccess(true);
